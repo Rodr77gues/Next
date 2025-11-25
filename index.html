@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>NextStop</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- PWA -->
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#ff2f7a">
+  <link rel="apple-touch-icon" href="icon-192.png">
+
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<!-- TELA INICIAL (ONBOARDING) -->
+<section id="welcome-screen" class="screen active">
+  <div class="welcome-box">
+    <h1>🚇 NextStop</h1>
+    <p>Conectando pessoas no metrô e CPTM de São Paulo</p>
+
+    <ul>
+      <li>❤️ Amizades, paqueras e network</li>
+      <li>📍 Usa sua localização (opcional)</li>
+      <li>🚉 Combina pela linha e estações</li>
+    </ul>
+
+    <button onclick="showLogin()" class="btn-primary big">
+      Entrar / Criar conta
+    </button>
+  </div>
+</section>
+
+<!-- TELA DE LOGIN -->
+<section id="login-screen" class="screen">
+  <div class="login-box">
+    <h2>Bem-vindo(a) ao NextStop</h2>
+    <p>Crie sua conta em 10 segundos</p>
+
+    <div class="form-group">
+      <label>Nome</label>
+      <input id="login-nome" type="text" placeholder="Seu nome">
+    </div>
+
+    <div class="form-group">
+      <label>Email</label>
+      <input id="login-email" type="email" placeholder="voce@email.com">
+    </div>
+
+    <button onclick="login()" class="btn-primary big">
+      Entrar
+    </button>
+
+    <button onclick="showWelcome()" class="btn-secondary">
+      Voltar
+    </button>
+  </div>
+</section>
+
+<!-- APP PRINCIPAL -->
+<section id="app-screen" class="screen">
+
+  <header class="top-bar">
+    <div>
+      <h1>NextStop</h1>
+      <p>Swipe para conhecer pessoas no seu trajeto</p>
+    </div>
+    <button class="btn-mini" onclick="logout()">Sair</button>
+  </header>
+
+  <!-- PAINEL DO TRAJETO -->
+  <section class="route-panel">
+    <h2>Seu trajeto</h2>
+    <p class="hint">Escolha a linha e as estações que você usa.</p>
+
+    <div class="form-group">
+      <label>Linha</label>
+      <select id="linhaSelect"></select>
+    </div>
+
+    <div class="form-row">
+      <div class="form-group">
+        <label>Estação de entrada</label>
+        <select id="entradaSelect"></select>
+      </div>
+      <div class="form-group">
+        <label>Estação de saída</label>
+        <select id="saidaSelect"></select>
+      </div>
+    </div>
+
+    <button class="btn-secondary" onclick="saveRoute()">Salvar trajeto</button>
+    <button class="btn-secondary" onclick="ativarLocalizacao()">Atualizar localização 📍</button>
+    <p id="routeStatus" class="status-text"></p>
+  </section>
+
+  <!-- ÁREA DE SWIPE / MATCH -->
+  <section class="swipe-area">
+    <div class="card-container" id="card-container"></div>
+
+    <div class="buttons">
+      <button onclick="dislike()" class="btn-circle">❌</button>
+      <button onclick="like()" class="btn-circle">❤️</button>
+    </div>
+
+    <div class="matches" id="statusMatch"></div>
+  </section>
+
+  <!-- CHAT APÓS MATCH -->
+  <section id="chat-screen" class="chat">
+    <h2>Chat com <span id="chatWithName"></span></h2>
+
+    <div id="chatMessages" class="chat-messages"></div>
+
+    <div class="chat-input-row">
+      <input id="chatInput" type="text" placeholder="Digite uma mensagem...">
+      <button onclick="sendMessage()" class="btn-primary">Enviar</button>
+    </div>
+  </section>
+
+</section>
+
+<script src="app.js"></script>
+
+<!-- Service Worker -->
+<script>
+if ("serviceWorker" in navigator) {
+  window.addEventListener("load", function () {
+    navigator.serviceWorker.register("sw.js")
+      .catch(err => console.log("SW erro:", err));
+  });
+}
+</script>
+
+</body>
+</html>
